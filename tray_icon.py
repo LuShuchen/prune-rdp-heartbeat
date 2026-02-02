@@ -17,9 +17,11 @@ def create_icon():
     return image
 
 class TrayController:
-    def __init__(self, on_show, on_hide, on_exit):
+    def __init__(self, on_show, on_hide, on_settings, on_about, on_exit):
         self.on_show = on_show
         self.on_hide = on_hide
+        self.on_settings = on_settings
+        self.on_about = on_about
         self.on_exit = on_exit
         self.icon = None
 
@@ -27,6 +29,8 @@ class TrayController:
         menu = Menu(
             MenuItem('Show', self.on_show_clicked),
             MenuItem('Hide', self.on_hide_clicked),
+            MenuItem('Settings', self.on_settings_clicked),
+            MenuItem('About', self.on_about_clicked),
             MenuItem('Exit', self.on_exit_clicked)
         )
 
@@ -41,13 +45,21 @@ class TrayController:
         if self.on_hide:
             self.on_hide()
 
+    def on_settings_clicked(self, icon, item):
+        if self.on_settings:
+            self.on_settings()
+
+    def on_about_clicked(self, icon, item):
+        if self.on_about:
+            self.on_about()
+
     def on_exit_clicked(self, icon, item):
         icon.stop()
         if self.on_exit:
             self.on_exit()
 
-def start_tray(on_show, on_hide, on_exit):
+def start_tray(on_show, on_hide, on_settings, on_about, on_exit):
     """
     Starts the tray icon controller.
     """
-    return TrayController(on_show, on_hide, on_exit)
+    return TrayController(on_show, on_hide, on_settings, on_about, on_exit)

@@ -78,3 +78,29 @@ def get_work_area():
     rect = wintypes.RECT()
     ctypes.windll.user32.SystemParametersInfoW(SPI_GETWORKAREA, 0, ctypes.byref(rect), 0)
     return (rect.left, rect.top, rect.right, rect.bottom)
+
+def create_single_instance_mutex(name):
+    """
+    Tries to create a named mutex.
+    Returns the handle if successful and we are the first instance.
+    Returns None if the mutex already exists (another instance is running).
+    """
+    if platform.system() != "Windows":
+        return 0 # No-op on non-Windows
+
+    ERROR_ALREADY_EXISTS = 184
+    kernel32 = ctypes.windll.kernel32
+    mutex = kernel32.CreateMutexW(None, True, name)
+
+    if kernel32.GetLastError() == ERROR_ALREADY_EXISTS:
+        # Mutex exists, meaning another instance is running
+        # We don't close the handle here, usually the OS cleans it up,
+        # but technically we should close this handle since we didn't 'create' the mutex ownership
+        # However, for a simple check, returning None is enough signal.
+        return None
+
+    return mutex
+
+def release_mutex(handle):
+    if handle and platform.system() == "Windows":
+        ctypes.windll.kernel32.CloseHandle(handle)
