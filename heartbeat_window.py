@@ -42,6 +42,9 @@ class BreatheWindow(tk.Tk):
         # Bind the Map event to ensure we apply styles exactly when the window appears
         self.bind("<Map>", self.apply_window_styles)
 
+        # Optimization: Track last applied alpha to avoid redundant API calls
+        self._last_applied_alpha_int = -1
+
         # Start animation loop
         self.pulse()
 
@@ -98,6 +101,8 @@ class BreatheWindow(tk.Tk):
         current_top = self.attributes("-topmost")
         if bool(current_top) != always_on_top:
             self.attributes("-topmost", always_on_top)
+            # Re-apply styles as attributes() can reset them on some Windows versions
+            self.apply_window_styles()
 
         step = 0.05
         min_alpha = self.cfg.get("opacity_min")
@@ -114,11 +119,16 @@ class BreatheWindow(tk.Tk):
                 self.alpha = max_alpha
                 self.fading_out = True
 
-        # Re-apply attributes every frame to ensure the alpha updates
-        try:
-            win_utils.set_layered_attributes(self.winfo_id(), self.bg_color, self.alpha)
-        except:
-            pass
+        # Optimization: Only call Windows API if the visible alpha value changes
+        current_alpha_int = int(self.alpha * 255)
+        current_alpha_int = max(0, min(255, current_alpha_int))
+
+        if current_alpha_int != self._last_applied_alpha_int:
+            try:
+                win_utils.set_layered_attributes(self.winfo_id(), self.bg_color, self.alpha)
+                self._last_applied_alpha_int = current_alpha_int
+            except:
+                pass
 
         speed = self.cfg.get("pulse_speed_ms")
         self.after(speed, self.pulse)
