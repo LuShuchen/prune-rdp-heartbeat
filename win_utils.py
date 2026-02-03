@@ -25,6 +25,18 @@ def set_click_through(hwnd):
     except Exception as e:
         print(f"Failed to set click-through: {e}")
 
+def find_window_by_title(title):
+    """
+    Finds a window by its title. Returns 0 if not found.
+    """
+    if platform.system() != "Windows":
+        return 0
+    try:
+        return ctypes.windll.user32.FindWindowW(None, title)
+    except Exception as e:
+        print(f"Failed to find window: {e}")
+        return 0
+
 def set_layered_attributes(hwnd, color_key_hex, alpha_float):
     """
     Directly sets the Layered Window Attributes to handle BOTH transparency (chroma key)

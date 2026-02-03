@@ -72,7 +72,14 @@ class BreatheWindow(tk.Tk):
         This must be called AFTER the window is mapped by the OS.
         """
         try:
-            hwnd = self.winfo_id()
+            # Try to get the specific HWND for the top-level window by title
+            # This ensures we get the correct handle even with overrideredirect
+            hwnd = win_utils.find_window_by_title(self.title())
+            if not hwnd:
+                hwnd = self.winfo_id()
+
+            self._cached_hwnd = hwnd
+
             # 1. Ensure the window has the WS_EX_LAYERED style
             win_utils.set_click_through(hwnd)
             # 2. Set the transparency key and initial alpha
@@ -125,7 +132,9 @@ class BreatheWindow(tk.Tk):
 
         if current_alpha_int != self._last_applied_alpha_int:
             try:
-                win_utils.set_layered_attributes(self.winfo_id(), self.bg_color, self.alpha)
+                # Use cached HWND if available, else fallback
+                hwnd = getattr(self, '_cached_hwnd', self.winfo_id())
+                win_utils.set_layered_attributes(hwnd, self.bg_color, self.alpha)
                 self._last_applied_alpha_int = current_alpha_int
             except:
                 pass
