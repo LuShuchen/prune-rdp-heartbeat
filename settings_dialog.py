@@ -70,13 +70,33 @@ class SettingsDialog(tk.Toplevel):
         top_check.grid(row=row, column=0, columnspan=2, sticky="w", pady=10)
         row += 1
 
+        # Position
+        self.reset_pos_flag = False
+        ttk.Label(main_frame, text="Position:").grid(row=row, column=0, sticky="w", pady=5)
+
+        cx = self.config_manager.get("window_x")
+        cy = self.config_manager.get("window_y")
+        pos_text = "Custom" if (cx is not None and cy is not None) else "Default"
+        self.pos_label_var = tk.StringVar(value=pos_text)
+
+        pos_frame = ttk.Frame(main_frame)
+        pos_frame.grid(row=row, column=1, sticky="we", pady=5)
+
+        ttk.Label(pos_frame, textvariable=self.pos_label_var).pack(side=tk.LEFT)
+        ttk.Button(pos_frame, text="Reset", command=self.mark_position_reset, width=6).pack(side=tk.LEFT, padx=10)
+        row += 1
+
         # Buttons
         btn_frame = ttk.Frame(main_frame)
         btn_frame.grid(row=row, column=0, columnspan=2, pady=20)
 
         ttk.Button(btn_frame, text="Save", command=self.save_settings).pack(side=tk.LEFT, padx=5)
         ttk.Button(btn_frame, text="Cancel", command=self.destroy).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="Reset Defaults", command=self.reset_settings).pack(side=tk.LEFT, padx=5)
+        ttk.Button(btn_frame, text="Reset Values", command=self.reset_settings).pack(side=tk.LEFT, padx=5)
+
+    def mark_position_reset(self):
+        self.reset_pos_flag = True
+        self.pos_label_var.set("Default (Pending)")
 
     def choose_color(self):
         # Disable the settings window while color chooser is open
@@ -115,6 +135,8 @@ class SettingsDialog(tk.Toplevel):
         self.opacity_max_var.set(defaults["opacity_max"])
         self.top_var.set(defaults["always_on_top"])
 
+        # Note: Position is NOT reset here. Use the specific 'Reset' button in the Position row.
+
     def save_settings(self):
         # Update config manager
         # Use current_color if set, else get from button (fallback)
@@ -125,6 +147,10 @@ class SettingsDialog(tk.Toplevel):
         self.config_manager.set("pulse_speed_ms", self.speed_var.get())
         self.config_manager.set("opacity_max", self.opacity_max_var.get())
         self.config_manager.set("always_on_top", self.top_var.get())
+
+        if getattr(self, 'reset_pos_flag', False):
+            self.config_manager.set("window_x", None)
+            self.config_manager.set("window_y", None)
 
         self.config_manager.save()
         self.destroy()

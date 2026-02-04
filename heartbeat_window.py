@@ -37,6 +37,9 @@ class BreatheWindow(tk.Tk):
         # Interaction State
         self.move_mode = False
 
+        # State tracking for config changes
+        self._last_config_x = self.cfg.get("window_x")
+
         # Animation State
         self.alpha = 0.8
         self.fading_out = True
@@ -158,7 +161,15 @@ class BreatheWindow(tk.Tk):
             self.draw_dot()
 
         new_size = self.cfg.get("dot_size")
-        if new_size != self.size:
+        size_changed = new_size != self.size
+
+        # Check if position was reset in config (changed from having value to None)
+        # We need to track the 'custom position' state to detect this transition
+        current_x_config = self.cfg.get("window_x")
+        position_reset = (self._last_config_x is not None) and (current_x_config is None)
+        self._last_config_x = current_x_config
+
+        if size_changed or position_reset:
             self.size = new_size
             self.update_position()
             self.draw_dot()
