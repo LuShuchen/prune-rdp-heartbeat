@@ -51,22 +51,39 @@ class BreatheWindow(tk.Tk):
         self.pulse()
 
     def update_position(self):
-        saved_x = self.cfg.get("window_x")
-        saved_y = self.cfg.get("window_y")
-
-        if saved_x is not None and saved_y is not None:
-            self.geometry(f"{self.size}x{self.size}+{saved_x}+{saved_y}")
-            return
-
         try:
             left, top, right, bottom = win_utils.get_work_area()
         except:
+            left, top = 0, 0
             right = self.winfo_screenwidth()
             bottom = self.winfo_screenheight()
 
-        x = right - self.size - 8
-        y = bottom - self.size - 8
+        x = self.cfg.get("window_x")
+        y = self.cfg.get("window_y")
+
+        if x is not None and y is not None:
+            # Clamp to screen boundaries to prevent clipping
+            try:
+                x = int(x)
+                y = int(y)
+
+                if x + self.size > right:
+                    x = right - self.size
+                if y + self.size > bottom:
+                    y = bottom - self.size
+                if x < left:
+                    x = left
+                if y < top:
+                    y = top
+            except:
+                pass
+        else:
+            # Default behavior (bottom right with margin)
+            x = right - self.size - 8
+            y = bottom - self.size - 8
+
         self.geometry(f"{self.size}x{self.size}+{x}+{y}")
+        self.update_idletasks()
 
     def toggle_move_mode(self):
         self.move_mode = not self.move_mode
