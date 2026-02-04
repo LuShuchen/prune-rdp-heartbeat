@@ -5,7 +5,6 @@ from config_manager import ConfigManager
 class BreatheWindow(tk.Tk):
     def __init__(self):
         super().__init__()
-        win_utils.set_dpi_awareness()
 
         # Load Config
         self.config_manager = ConfigManager()
@@ -29,11 +28,14 @@ class BreatheWindow(tk.Tk):
         # Canvas for the dot
         self.canvas = tk.Canvas(self, width=self.size, height=self.size,
                                 bg=self.bg_color, highlightthickness=0)
-        self.canvas.pack()
+        self.canvas.pack(fill=tk.BOTH, expand=True)
 
         # Draw Circle
         self.dot_color = self.cfg.get("dot_color")
         self.draw_dot()
+
+        # Interaction State
+        self.move_mode = False
 
         # Animation State
         self.alpha = 0.8
@@ -49,6 +51,13 @@ class BreatheWindow(tk.Tk):
         self.pulse()
 
     def update_position(self):
+        saved_x = self.cfg.get("window_x")
+        saved_y = self.cfg.get("window_y")
+
+        if saved_x is not None and saved_y is not None:
+            self.geometry(f"{self.size}x{self.size}+{saved_x}+{saved_y}")
+            return
+
         try:
             left, top, right, bottom = win_utils.get_work_area()
         except:
@@ -58,6 +67,38 @@ class BreatheWindow(tk.Tk):
         x = right - self.size - 8
         y = bottom - self.size - 8
         self.geometry(f"{self.size}x{self.size}+{x}+{y}")
+
+    def toggle_move_mode(self):
+        self.move_mode = not self.move_mode
+        hwnd = getattr(self, '_cached_hwnd', self.winfo_id())
+
+        if self.move_mode:
+            win_utils.remove_click_through(hwnd)
+            self.canvas.config(highlightthickness=2, highlightbackground="#FF0000")
+            self.canvas.bind("<Button-1>", self.start_drag)
+            self.canvas.bind("<B1-Motion>", self.on_drag)
+            self.canvas.bind("<ButtonRelease-1>", self.end_drag)
+        else:
+            win_utils.set_click_through(hwnd)
+            self.canvas.config(highlightthickness=0)
+            self.canvas.unbind("<Button-1>")
+            self.canvas.unbind("<B1-Motion>")
+            self.canvas.unbind("<ButtonRelease-1>")
+
+    def start_drag(self, event):
+        self._drag_start_x = event.x
+        self._drag_start_y = event.y
+
+    def on_drag(self, event):
+        deltax = event.x - self._drag_start_x
+        deltay = event.y - self._drag_start_y
+        x = self.winfo_x() + deltax
+        y = self.winfo_y() + deltay
+        self.geometry(f"+{x}+{y}")
+
+    def end_drag(self, event):
+        self.cfg.set("window_x", self.winfo_x())
+        self.cfg.set("window_y", self.winfo_y())
 
     def draw_dot(self):
         self.canvas.delete("all")
@@ -81,7 +122,11 @@ class BreatheWindow(tk.Tk):
             self._cached_hwnd = hwnd
 
             # 1. Ensure the window has the WS_EX_LAYERED style
-            win_utils.set_click_through(hwnd)
+            if self.move_mode:
+                win_utils.remove_click_through(hwnd)
+            else:
+                win_utils.set_click_through(hwnd)
+
             # 2. Set the transparency key and initial alpha
             win_utils.set_layered_attributes(hwnd, self.bg_color, self.alpha)
         except Exception as e:
@@ -98,7 +143,6 @@ class BreatheWindow(tk.Tk):
         new_size = self.cfg.get("dot_size")
         if new_size != self.size:
             self.size = new_size
-            self.canvas.config(width=self.size, height=self.size)
             self.update_position()
             self.draw_dot()
 

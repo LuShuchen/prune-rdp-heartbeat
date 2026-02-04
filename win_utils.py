@@ -25,6 +25,22 @@ def set_click_through(hwnd):
     except Exception as e:
         print(f"Failed to set click-through: {e}")
 
+def remove_click_through(hwnd):
+    """
+    Removes the click-through style (WS_EX_TRANSPARENT) but keeps WS_EX_LAYERED.
+    """
+    if platform.system() != "Windows":
+        return
+
+    try:
+        user32 = ctypes.windll.user32
+        ex_style = user32.GetWindowLongW(hwnd, GWL_EXSTYLE)
+        # Remove WS_EX_TRANSPARENT, keep others
+        new_style = ex_style & ~WS_EX_TRANSPARENT
+        user32.SetWindowLongW(hwnd, GWL_EXSTYLE, new_style)
+    except Exception as e:
+        print(f"Failed to remove click-through: {e}")
+
 def find_window_by_title(title):
     """
     Finds a window by its title. Returns 0 if not found.

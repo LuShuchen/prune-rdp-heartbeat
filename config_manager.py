@@ -9,7 +9,9 @@ class ConfigManager:
         "opacity_max": 1.0,
         "opacity_min": 0.3,
         "pulse_speed_ms": 50,
-        "always_on_top": True
+        "always_on_top": True,
+        "window_x": None,
+        "window_y": None
     }
 
     def __init__(self, filename="config.json"):

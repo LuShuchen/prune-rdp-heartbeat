@@ -8,6 +8,9 @@ from settings_dialog import SettingsDialog
 from about_dialog import AboutDialog
 
 def main():
+    # Set DPI awareness as early as possible (before Tk initialization)
+    win_utils.set_dpi_awareness()
+
     # 0. Single Instance Check
     # We use a Global mutex to ensure it works across sessions if needed,
     # though "Local\" is safer for per-user session.
@@ -32,6 +35,9 @@ def main():
     def safe_hide():
         app.after(0, app.hide)
 
+    def safe_toggle_move():
+        app.after(0, app.toggle_move_mode)
+
     def safe_open_settings():
         def open_settings_dialog():
             # Only open if not already open (basic check, can be improved)
@@ -54,7 +60,7 @@ def main():
     # pystray blocks its calling thread, so we must use a separate thread
     # to let Tkinter's mainloop run on the main thread.
     def run_tray():
-        tray = start_tray(safe_show, safe_hide, safe_open_settings, safe_open_about, safe_exit)
+        tray = start_tray(safe_show, safe_hide, safe_toggle_move, safe_open_settings, safe_open_about, safe_exit)
         tray.run()
 
     tray_thread = threading.Thread(target=run_tray, daemon=True)
