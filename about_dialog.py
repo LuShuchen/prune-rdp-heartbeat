@@ -1,51 +1,90 @@
-import tkinter as tk
-from tkinter import ttk
+import customtkinter as ctk
 import webbrowser
 
-class AboutDialog(tk.Toplevel):
+class AboutDialog(ctk.CTkToplevel):
     def __init__(self, parent):
         super().__init__(parent)
-        self.title("About RDP Heartbeat")
-        self.geometry("300x200")
-        self.resizable(False, False)
 
         # Make modal
         self.transient(parent)
         self.grab_set()
 
-        self.create_widgets()
-        self.center_window()
+        # Window setup
+        self.overrideredirect(True)
+        self.attributes("-topmost", True)
 
-    def center_window(self):
+        # UI Setup
+        self.setup_custom_title_bar()
+        self.setup_main_ui()
+        self.center_window_adaptive()
+
+        # Focus
+        self.focus_force()
+
+    def center_window_adaptive(self):
         self.update_idletasks()
-        width = self.winfo_width()
-        height = self.winfo_height()
-        x = (self.winfo_screenwidth() // 2) - (width // 2)
-        y = (self.winfo_screenheight() // 2) - (height // 2)
-        self.geometry(f'+{x}+{y}')
+        width = 320
+        height = 340 # Slightly taller for the content
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        x = int((screen_width / 2) - (width / 2))
+        y = int((screen_height / 2) - (height / 2))
+        self.geometry(f"{width}x{height}+{x}+{y}")
 
-    def create_widgets(self):
-        frame = ttk.Frame(self, padding="20")
-        frame.pack(fill=tk.BOTH, expand=True)
+    def setup_custom_title_bar(self):
+        self.title_bar = ctk.CTkFrame(self, height=40, corner_radius=0, fg_color="#2B2B2B")
+        self.title_bar.pack(side="top", fill="x")
 
-        # Title / Icon placeholder
-        title_lbl = ttk.Label(frame, text="RDP Heartbeat", font=("Segoe UI", 16, "bold"))
-        title_lbl.pack(pady=(0, 5))
+        self.title_bar.bind("<ButtonPress-1>", self.start_move)
+        self.title_bar.bind("<B1-Motion>", self.do_move)
+
+        title_label = ctk.CTkLabel(self.title_bar, text="About", text_color="white", font=("Roboto Medium", 13))
+        title_label.pack(side="left", padx=15)
+        title_label.bind("<ButtonPress-1>", self.start_move)
+        title_label.bind("<B1-Motion>", self.do_move)
+
+        btn_close = ctk.CTkButton(self.title_bar, text="✕", width=40, height=40,
+                                  fg_color="transparent", hover_color="#C42B1C",
+                                  corner_radius=0, command=self.destroy)
+        btn_close.pack(side="right")
+
+    def setup_main_ui(self):
+        self.main_frame = ctk.CTkFrame(self, corner_radius=0, fg_color="#F0F0F0")
+        self.main_frame.pack(fill="both", expand=True)
+
+        # Content Card
+        self.content_frame = ctk.CTkFrame(self.main_frame, corner_radius=10, fg_color="white")
+        self.content_frame.pack(padx=20, pady=(20, 10), fill="both", expand=True)
+
+        # Title
+        ctk.CTkLabel(self.content_frame, text="RDP Heartbeat", font=("Roboto Medium", 20)).pack(pady=(20, 5))
 
         # Version
-        ver_lbl = ttk.Label(frame, text="Version 1.0.0", font=("Segoe UI", 10))
-        ver_lbl.pack(pady=(0, 10))
+        ctk.CTkLabel(self.content_frame, text="Version 1.0.0", font=("Roboto", 12), text_color="gray50").pack(pady=(0, 15))
 
         # Description
-        desc_lbl = ttk.Label(frame, text="Keeps your remote session alive\nwith a subtle visual heartbeat.",
-                             justify="center")
-        desc_lbl.pack(pady=(0, 15))
+        desc_text = "Keeps your remote session alive\nwith a subtle visual heartbeat."
+        ctk.CTkLabel(self.content_frame, text=desc_text, font=("Roboto", 12), text_color="gray20").pack(pady=(0, 15))
 
-        # Support Link
-        link_lbl = tk.Label(frame, text="Visit Project Website", fg="blue", cursor="hand2")
-        link_lbl.pack(pady=(0, 20))
-        link_lbl.bind("<Button-1>", lambda e: webbrowser.open("https://github.com/LuShuchen/prune-rdp-heartbeat"))
+        # Link
+        btn_link = ctk.CTkButton(self.content_frame, text="Visit Project Website",
+                                 fg_color="transparent", text_color="#1F6AA5", hover_color="#F0F0F0",
+                                 font=("Roboto", 12, "underline"),
+                                 height=25,
+                                 cursor="hand2",
+                                 command=lambda: webbrowser.open("https://github.com/LuShuchen/prune-rdp-heartbeat"))
+        btn_link.pack(pady=(0, 20))
 
         # Close Button
-        btn = ttk.Button(frame, text="Close", command=self.destroy)
-        btn.pack()
+        ctk.CTkButton(self.main_frame, text="Close", width=100, height=35, command=self.destroy).pack(pady=(10, 20))
+
+    def start_move(self, event):
+        self.x = event.x
+        self.y = event.y
+
+    def do_move(self, event):
+        deltax = event.x - self.x
+        deltay = event.y - self.y
+        x = self.winfo_x() + deltax
+        y = self.winfo_y() + deltay
+        self.geometry(f"+{x}+{y}")
