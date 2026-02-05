@@ -2,7 +2,7 @@
 
 **Last Updated:** February 5, 2026
 
-This Privacy Policy describes how **Prune RDP Heartbeat** ("the Application") collects, uses, and discloses your information.
+This Privacy Policy describes how **RDP Heartbeat** ("the Application") collects, uses, and discloses your information.
 
 ## 1. Data Collection
 The Application **does not collect, store, transmit, or share any personal information**, usage data, or telemetry.
