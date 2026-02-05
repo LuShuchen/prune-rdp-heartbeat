@@ -83,7 +83,7 @@ class SettingsDialog(ctk.CTkToplevel):
         ctk.CTkLabel(self.frame_visual, text="APPEARANCE", font=("Roboto Medium", 11), text_color="gray").grid(row=0, column=0, sticky="w", padx=20, pady=(15, 5))
 
         # Color
-        ctk.CTkLabel(self.frame_visual, text="Dot Color").grid(row=1, column=0, sticky="w", padx=20, pady=10)
+        ctk.CTkLabel(self.frame_visual, text="Dot Color").grid(row=1, column=0, sticky="w", padx=20, pady=(12, 10))
 
         # New Color Input Group (adapted from demo.py)
         self.input_group = ctk.CTkFrame(
@@ -194,12 +194,12 @@ class SettingsDialog(ctk.CTkToplevel):
         btn_restore = ctk.CTkButton(self.frame_actions, text="Restore Defaults", fg_color="transparent", text_color="gray40", hover=False, anchor="w", command=self.restore_defaults)
         btn_restore.pack(side="left")
 
-        btn_save = ctk.CTkButton(self.frame_actions, text="Save", width=100, height=35, command=self.save_settings)
+        btn_save = ctk.CTkButton(self.frame_actions, text="Save", width=120, height=35, command=self.save_settings)
         btn_save.pack(side="right")
 
         btn_cancel = ctk.CTkButton(self.frame_actions, text="Cancel", fg_color="transparent",
                                    border_width=1, border_color="gray70", text_color="gray20",
-                                   width=80, height=35, command=self.quit_app)
+                                   width=100, height=35, command=self.quit_app)
         btn_cancel.pack(side="right", padx=10)
 
     # Logic

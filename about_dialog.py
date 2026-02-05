@@ -69,14 +69,16 @@ class AboutDialog(ctk.CTkToplevel):
         # Link
         btn_link = ctk.CTkButton(self.content_frame, text="Visit Project Website",
                                  fg_color="transparent", text_color="#1F6AA5", hover_color="#F0F0F0",
-                                 font=("Roboto", 12, "underline"),
+                                 font=("Roboto", 12),
                                  height=25,
                                  cursor="hand2",
                                  command=lambda: webbrowser.open("https://github.com/LuShuchen/prune-rdp-heartbeat"))
         btn_link.pack(pady=(0, 20))
+        btn_link.bind("<Enter>", lambda e: btn_link.configure(font=("Roboto", 12, "underline")))
+        btn_link.bind("<Leave>", lambda e: btn_link.configure(font=("Roboto", 12)))
 
         # Close Button
-        ctk.CTkButton(self.main_frame, text="Close", width=100, height=35, command=self.destroy).pack(pady=(10, 20))
+        ctk.CTkButton(self.main_frame, text="Close", width=120, height=35, command=self.destroy).pack(pady=(10, 20))
 
     def start_move(self, event):
         self.x = event.x
