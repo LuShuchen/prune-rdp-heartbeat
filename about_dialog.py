@@ -60,7 +60,7 @@ class AboutDialog(ctk.CTkToplevel):
         ctk.CTkLabel(self.content_frame, text="RDP Heartbeat", font=("Roboto Medium", 20)).pack(pady=(20, 5))
 
         # Version
-        ctk.CTkLabel(self.content_frame, text="Version 1.0.0", font=("Roboto", 12), text_color="gray50").pack(pady=(0, 15))
+        ctk.CTkLabel(self.content_frame, text="Version 1.0.0.0", font=("Roboto", 12), text_color="gray50").pack(pady=(0, 15))
 
         # Description
         desc_text = "A visual heartbeat to detect\nsilent RDP freezes and connection drops."
