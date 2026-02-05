@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from tkinter import colorchooser
+import re
 
 # Initialize theme (matches demo.py)
 ctk.set_appearance_mode("Light")
@@ -42,7 +43,7 @@ class SettingsDialog(ctk.CTkToplevel):
 
     def center_window_adaptive(self):
         self.update_idletasks()
-        width = 400
+        width = 460  # Increased from 400 to fit new UI elements better
         # Ensure we have a reasonable height even if calculation is off initially
         height = max(self.winfo_reqheight(), 500)
         screen_width = self.winfo_screenwidth()
@@ -81,10 +82,57 @@ class SettingsDialog(ctk.CTkToplevel):
 
         # Color
         ctk.CTkLabel(self.frame_visual, text="Dot Color").grid(row=1, column=0, sticky="w", padx=20, pady=10)
-        self.color_preview = ctk.CTkButton(self.frame_visual, text=self.var_color.get(), width=100,
-                                           fg_color=self.var_color.get(), text_color="black", hover_color=self.var_color.get(),
-                                           command=self.choose_color)
-        self.color_preview.grid(row=1, column=1, sticky="e", padx=20)
+
+        # New Color Input Group (adapted from demo.py)
+        self.input_group = ctk.CTkFrame(
+            self.frame_visual,
+            fg_color="white",          # Match parent bg
+            border_width=2,
+            border_color="#E0E0E0",
+            corner_radius=8
+        )
+        self.input_group.grid(row=1, column=1, columnspan=2, sticky="ew", padx=(0, 20), pady=10)
+
+        # 1. Color Dot
+        self.color_dot = ctk.CTkButton(
+            self.input_group,
+            text="",
+            width=24,
+            height=24,
+            corner_radius=12,
+            fg_color=self.var_color.get(),
+            hover=False,
+            command=None
+        )
+        self.color_dot.pack(side="left", padx=(10, 5), pady=8)
+
+        # 2. Picker Button (Pack RIGHT before filling center)
+        self.btn_picker = ctk.CTkButton(
+            self.input_group,
+            text="🖊",
+            font=("Arial", 16),
+            width=36,
+            height=36,
+            fg_color="transparent",
+            text_color="#666666",
+            hover_color="#F2F2F2",
+            corner_radius=6,
+            command=self.choose_color
+        )
+        self.btn_picker.pack(side="right", padx=(0, 5), pady=2)
+
+        # 3. Hex Entry (Fill remaining space)
+        self.entry_hex = ctk.CTkEntry(
+            self.input_group,
+            textvariable=self.var_color,
+            border_width=0,
+            fg_color="transparent",
+            text_color="#333333",
+            font=("Roboto Mono", 12),
+            width=100
+        )
+        self.entry_hex.pack(side="left", fill="both", expand=True, pady=2)
+        self.entry_hex.bind("<KeyRelease>", self.on_hex_input)
 
         # Size
         ctk.CTkLabel(self.frame_visual, text="Size").grid(row=2, column=0, sticky="w", padx=20, pady=10)
@@ -169,12 +217,25 @@ class SettingsDialog(ctk.CTkToplevel):
     def update_op_label(self, value): self.lbl_op_val.configure(text=f"{int(value)} %")
     def update_speed_label(self, value): self.lbl_speed_val.configure(text=f"{int(value)} ms")
 
+    def on_hex_input(self, event):
+        hex_code = self.var_color.get()
+        if re.match(r"^#[0-9A-Fa-f]{6}$", hex_code):
+            self.update_dot_color(hex_code)
+
+    def update_dot_color(self, color):
+        try:
+            self.color_dot.configure(fg_color=color)
+            self.input_group.configure(border_color="#E0E0E0")
+        except:
+            pass
+
     def choose_color(self):
         try:
             color = colorchooser.askcolor(color=self.var_color.get(), parent=self)[1]
             if color:
+                color = color.upper()
                 self.var_color.set(color)
-                self.color_preview.configure(text=color, fg_color=color)
+                self.update_dot_color(color)
         except Exception as e:
             print(f"Error picking color: {e}")
 
@@ -185,7 +246,7 @@ class SettingsDialog(ctk.CTkToplevel):
     def restore_defaults(self):
         d = self.config_manager.DEFAULT_CONFIG
         self.var_color.set(d["dot_color"])
-        self.color_preview.configure(text=d["dot_color"], fg_color=d["dot_color"])
+        self.update_dot_color(d["dot_color"])
 
         self.var_size.set(d["dot_size"])
         self.update_size_label(d["dot_size"])
