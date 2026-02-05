@@ -1,8 +1,28 @@
 from pystray import Icon, Menu, MenuItem
 from PIL import Image, ImageDraw
+import os
+import sys
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 def create_icon():
-    # Create an icon image: Black background, Cyan circle
+    # 1. Try loading from file (icon.ico)
+    try:
+        icon_path = resource_path("icon.ico")
+        if os.path.exists(icon_path):
+            return Image.open(icon_path)
+    except Exception as e:
+        print(f"Error loading icon: {e}")
+
+    # 2. Fallback: Create an icon image: Black background, Cyan circle
     # Size 64x64
     width = 64
     height = 64

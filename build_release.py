@@ -23,6 +23,9 @@ def run_build():
         "--onefile",
         "--name=RDPHeartbeat",
         "--clean",
+        # Icon configuration
+        "--icon=icon.ico",
+        "--add-data=icon.ico;.",
         # Explicitly import hidden imports if needed (sometimes pystray/PIL needs help)
         "--hidden-import=PIL._tkinter_finder",
         "--hidden-import=pystray",
