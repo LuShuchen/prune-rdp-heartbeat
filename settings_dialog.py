@@ -77,6 +77,8 @@ class SettingsDialog(ctk.CTkToplevel):
         # 1. Appearance
         self.frame_visual = ctk.CTkFrame(self.main_frame, corner_radius=10, fg_color="white")
         self.frame_visual.grid(row=0, column=0, padx=20, pady=(20, 10), sticky="ew")
+        self.frame_visual.grid_columnconfigure(0, minsize=120)  # Align labels across groups
+        self.frame_visual.grid_columnconfigure(1, weight=1)
 
         ctk.CTkLabel(self.frame_visual, text="APPEARANCE", font=("Roboto Medium", 11), text_color="gray").grid(row=0, column=0, sticky="w", padx=20, pady=(15, 5))
 
@@ -138,21 +140,23 @@ class SettingsDialog(ctk.CTkToplevel):
         ctk.CTkLabel(self.frame_visual, text="Size").grid(row=2, column=0, sticky="w", padx=20, pady=10)
         self.slider_size = ctk.CTkSlider(self.frame_visual, from_=5, to=64, variable=self.var_size, number_of_steps=59, command=self.update_size_label)
         self.slider_size.grid(row=2, column=1, sticky="ew", padx=(0, 10))
-        self.lbl_size_val = ctk.CTkLabel(self.frame_visual, text=f"{self.var_size.get()} px", width=40)
+        self.lbl_size_val = ctk.CTkLabel(self.frame_visual, text=f"{self.var_size.get()} px", width=50)
         self.lbl_size_val.grid(row=2, column=2, padx=20)
 
         # Opacity
         ctk.CTkLabel(self.frame_visual, text="Max Opacity").grid(row=3, column=0, sticky="w", padx=20, pady=(10, 20))
         self.slider_op = ctk.CTkSlider(self.frame_visual, from_=10, to=100, variable=self.var_opacity, number_of_steps=90, command=self.update_op_label)
         self.slider_op.grid(row=3, column=1, sticky="ew", padx=(0, 10))
-        self.lbl_op_val = ctk.CTkLabel(self.frame_visual, text=f"{self.var_opacity.get()} %", width=40)
+        self.lbl_op_val = ctk.CTkLabel(self.frame_visual, text=f"{self.var_opacity.get()} %", width=50)
         self.lbl_op_val.grid(row=3, column=2, padx=20, pady=(10, 20))
 
-        self.frame_visual.grid_columnconfigure(1, weight=1)
+        # Removed redundant columnconfigure(1) here since we moved it up
 
         # 2. Behavior
         self.frame_behavior = ctk.CTkFrame(self.main_frame, corner_radius=10, fg_color="white")
         self.frame_behavior.grid(row=1, column=0, padx=20, pady=10, sticky="ew")
+        self.frame_behavior.grid_columnconfigure(0, minsize=120) # Align labels across groups
+        self.frame_behavior.grid_columnconfigure(1, weight=1)
 
         ctk.CTkLabel(self.frame_behavior, text="BEHAVIOR", font=("Roboto Medium", 11), text_color="gray").grid(row=0, column=0, sticky="w", padx=20, pady=(15, 5))
 
@@ -171,7 +175,7 @@ class SettingsDialog(ctk.CTkToplevel):
         # Position
         ctk.CTkLabel(self.frame_behavior, text="Position").grid(row=3, column=0, sticky="w", padx=20, pady=(10, 20))
 
-        self.btn_center_text = ctk.StringVar(value="Reset to Center (Default)")
+        self.btn_center_text = ctk.StringVar(value="Reset to Bottom Right (Default)")
         # Check if custom
         if self.config_manager.get("window_x") is not None:
              self.btn_center_text.set("Reset to Default Position")
@@ -181,7 +185,7 @@ class SettingsDialog(ctk.CTkToplevel):
                                    height=28, command=self.reset_position)
         self.btn_center.grid(row=3, column=1, columnspan=2, sticky="w", pady=(10, 20))
 
-        self.frame_behavior.grid_columnconfigure(1, weight=1)
+        # Removed redundant columnconfigure(1) here since we moved it up
 
         # 3. Actions
         self.frame_actions = ctk.CTkFrame(self.main_frame, fg_color="transparent")
