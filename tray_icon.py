@@ -25,12 +25,13 @@ class TrayController:
         self.on_about = on_about
         self.on_exit = on_exit
         self.icon = None
+        self.is_moving = False
 
     def run(self):
         menu = Menu(
             MenuItem('Show', self.on_show_clicked),
             MenuItem('Hide', self.on_hide_clicked),
-            MenuItem('Move Window', self.on_move_clicked),
+            MenuItem(self.get_move_label, self.on_move_clicked),
             MenuItem('Settings', self.on_settings_clicked),
             MenuItem('About', self.on_about_clicked),
             MenuItem('Exit', self.on_exit_clicked)
@@ -38,6 +39,9 @@ class TrayController:
 
         self.icon = Icon("RDP Heartbeat", create_icon(), "RDP Canary", menu)
         self.icon.run()
+
+    def get_move_label(self, item):
+        return "Disable Move Mode" if self.is_moving else "Enable Move Mode"
 
     def on_show_clicked(self, icon, item):
         if self.on_show:
@@ -48,6 +52,7 @@ class TrayController:
             self.on_hide()
 
     def on_move_clicked(self, icon, item):
+        self.is_moving = not self.is_moving
         if self.on_move:
             self.on_move()
 
