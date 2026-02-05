@@ -18,7 +18,7 @@ def run_build():
     # --name: Output filename
     # --clean: Clean PyInstaller cache
     cmd = [
-        "pyinstaller",
+        sys.executable, "-m", "PyInstaller",
         "--noconsole",
         "--onefile",
         "--name=RDPHeartbeat",
