@@ -182,7 +182,7 @@ class SettingsDialog(ctk.CTkToplevel):
 
         self.btn_center = ctk.CTkButton(self.frame_behavior, textvariable=self.btn_center_text, fg_color="transparent",
                                    border_width=1, border_color=("gray70", "gray30"), text_color="gray20",
-                                   height=28, command=self.reset_position)
+                                   height=28, width=260, command=self.reset_position)
         self.btn_center.grid(row=3, column=1, columnspan=2, sticky="w", pady=(10, 20))
 
         # Removed redundant columnconfigure(1) here since we moved it up
