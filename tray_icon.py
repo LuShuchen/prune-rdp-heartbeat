@@ -57,7 +57,7 @@ class TrayController:
             MenuItem('Exit', self.on_exit_clicked)
         )
 
-        self.icon = Icon("RDP Heartbeat", create_icon(), "RDP Canary", menu)
+        self.icon = Icon("RDP Heartbeat", create_icon(), "RDP Heartbeat", menu)
         self.icon.run()
 
     def get_move_label(self, item):
