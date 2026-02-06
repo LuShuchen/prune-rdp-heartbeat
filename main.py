@@ -15,7 +15,7 @@ def main():
     # We use a Global mutex to ensure it works across sessions if needed,
     # though "Local\" is safer for per-user session.
     # For a heartbeat tool, per-user is likely what we want.
-    mutex_name = "Local\\PruneRDPHeartbeatInstance"
+    mutex_name = "Local\\RDPHeartbeatInstance"
     mutex = win_utils.create_single_instance_mutex(mutex_name)
     if mutex is None:
         # Another instance is running

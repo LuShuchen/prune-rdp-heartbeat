@@ -24,7 +24,7 @@ class ConfigManager:
         Returns the appropriate configuration directory for the platform.
         """
         if platform.system() == "Windows":
-            return os.path.join(os.environ.get("APPDATA", "."), "PruneRDPHeartbeat")
+            return os.path.join(os.environ.get("APPDATA", "."), "RDPHeartbeat")
         else:
             # Fallback for dev/linux
             return os.path.dirname(os.path.abspath(__file__))

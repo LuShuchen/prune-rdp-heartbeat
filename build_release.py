@@ -4,7 +4,7 @@ import shutil
 import sys
 
 def run_build():
-    print("🚀 Starting Build Process for Prune RDP Heartbeat...")
+    print("🚀 Starting Build Process for RDP Heartbeat...")
 
     # 1. Clean previous builds
     if os.path.exists("build"):
