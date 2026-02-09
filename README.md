@@ -2,6 +2,10 @@
 
 **A subtle, visual heartbeat for your remote desktop sessions.**
 
+<a href="https://apps.microsoft.com/detail/9pc7fzmd5xkv?mode=mini">
+  <img src="https://get.microsoft.com/images/en-us%20dark.svg" width="200"/>
+</a>
+
 ## Why this tool?
 
 I work remotely via RDP extensively. My RDP connection runs over UDP, which is fast but can be unreliable. Often, when running long tasks like compiling code or waiting for AI coding tools, the screen would freeze silently. I'd be left wondering:
