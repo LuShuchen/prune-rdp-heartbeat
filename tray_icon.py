@@ -2,6 +2,10 @@ from pystray import Icon, Menu, MenuItem
 from PIL import Image, ImageDraw
 import os
 import sys
+from logger import get_logger
+from i18n import t
+
+logger = get_logger(__name__)
 
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
@@ -20,7 +24,7 @@ def create_icon():
         if os.path.exists(icon_path):
             return Image.open(icon_path)
     except Exception as e:
-        print(f"Error loading icon: {e}")
+        logger.error(f"Error loading icon: {e}")
 
     # 2. Fallback: Create an icon image: Black background, Cyan circle
     # Size 64x64
@@ -49,19 +53,19 @@ class TrayController:
 
     def run(self):
         menu = Menu(
-            MenuItem('Show', self.on_show_clicked),
-            MenuItem('Hide', self.on_hide_clicked),
+            MenuItem(lambda item: t("tray.show"), self.on_show_clicked),
+            MenuItem(lambda item: t("tray.hide"), self.on_hide_clicked),
             MenuItem(self.get_move_label, self.on_move_clicked),
-            MenuItem('Settings', self.on_settings_clicked),
-            MenuItem('About', self.on_about_clicked),
-            MenuItem('Exit', self.on_exit_clicked)
+            MenuItem(lambda item: t("tray.settings"), self.on_settings_clicked),
+            MenuItem(lambda item: t("tray.about"), self.on_about_clicked),
+            MenuItem(lambda item: t("tray.exit"), self.on_exit_clicked)
         )
 
         self.icon = Icon("RDP Heartbeat", create_icon(), "RDP Heartbeat", menu)
         self.icon.run()
 
     def get_move_label(self, item):
-        return "Disable Move Mode" if self.is_moving else "Enable Move Mode"
+        return t("tray.move_disable") if self.is_moving else t("tray.move_enable")
 
     def on_show_clicked(self, icon, item):
         if self.on_show:

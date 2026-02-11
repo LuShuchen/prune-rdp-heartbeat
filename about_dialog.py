@@ -1,5 +1,7 @@
 import customtkinter as ctk
 import webbrowser
+from version import APP_VERSION
+from i18n import t
 
 class AboutDialog(ctk.CTkToplevel):
     def __init__(self, parent):
@@ -38,7 +40,7 @@ class AboutDialog(ctk.CTkToplevel):
         self.title_bar.bind("<ButtonPress-1>", self.start_move)
         self.title_bar.bind("<B1-Motion>", self.do_move)
 
-        title_label = ctk.CTkLabel(self.title_bar, text="About", text_color="white", font=("Roboto Medium", 13))
+        title_label = ctk.CTkLabel(self.title_bar, text=t("about.title"), text_color="white", font=("Roboto Medium", 13))
         title_label.pack(side="left", padx=15)
         title_label.bind("<ButtonPress-1>", self.start_move)
         title_label.bind("<B1-Motion>", self.do_move)
@@ -57,17 +59,16 @@ class AboutDialog(ctk.CTkToplevel):
         self.content_frame.pack(padx=20, pady=(20, 10), fill="both", expand=True)
 
         # Title
-        ctk.CTkLabel(self.content_frame, text="RDP Heartbeat", font=("Roboto Medium", 20)).pack(pady=(20, 5))
+        ctk.CTkLabel(self.content_frame, text=t("about.app_name"), font=("Roboto Medium", 20)).pack(pady=(20, 5))
 
         # Version
-        ctk.CTkLabel(self.content_frame, text="Version 1.0.0.0", font=("Roboto", 12), text_color="gray50").pack(pady=(0, 15))
+        ctk.CTkLabel(self.content_frame, text=f"Version {APP_VERSION}", font=("Roboto", 12), text_color="gray50").pack(pady=(0, 15))
 
         # Description
-        desc_text = "A visual heartbeat to detect\nsilent RDP freezes and connection drops."
-        ctk.CTkLabel(self.content_frame, text=desc_text, font=("Roboto", 12), text_color="gray20").pack(pady=(0, 15))
+        ctk.CTkLabel(self.content_frame, text=t("about.description"), font=("Roboto", 12), text_color="gray20").pack(pady=(0, 15))
 
         # Link
-        btn_link = ctk.CTkButton(self.content_frame, text="Visit Project Website",
+        btn_link = ctk.CTkButton(self.content_frame, text=t("about.visit_website"),
                                  fg_color="transparent", text_color="#1F6AA5", hover_color="#F0F0F0",
                                  font=("Roboto", 12),
                                  height=25,
@@ -78,7 +79,7 @@ class AboutDialog(ctk.CTkToplevel):
         btn_link.bind("<Leave>", lambda e: btn_link.configure(font=("Roboto", 12)))
 
         # Close Button
-        ctk.CTkButton(self.main_frame, text="Close", width=120, height=35, command=self.destroy).pack(pady=(10, 20))
+        ctk.CTkButton(self.main_frame, text=t("about.close"), width=120, height=35, command=self.destroy).pack(pady=(10, 20))
 
     def start_move(self, event):
         self.x = event.x
