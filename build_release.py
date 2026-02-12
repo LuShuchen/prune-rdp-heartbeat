@@ -2,9 +2,31 @@ import os
 import subprocess
 import shutil
 import sys
+import re
+from version import APP_VERSION
+
+def patch_setup_iss():
+    """Patch setup.iss with the current version from version.py."""
+    iss_path = "setup.iss"
+    if not os.path.exists(iss_path):
+        print(f"⚠️ {iss_path} not found, skipping version patch.")
+        return
+    with open(iss_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+    content = re.sub(
+        r'#define MyAppVersion ".*?"',
+        f'#define MyAppVersion "{APP_VERSION}"',
+        content
+    )
+    with open(iss_path, 'w', encoding='utf-8') as f:
+        f.write(content)
+    print(f"✅ Patched {iss_path} with version {APP_VERSION}")
 
 def run_build():
-    print("🚀 Starting Build Process for RDP Heartbeat...")
+    print(f"🚀 Starting Build Process for RDP Heartbeat v{APP_VERSION}...")
+
+    # 0. Patch setup.iss with current version
+    patch_setup_iss()
 
     # 1. Clean previous builds
     if os.path.exists("build"):

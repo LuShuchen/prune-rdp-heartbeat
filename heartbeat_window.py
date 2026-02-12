@@ -1,6 +1,9 @@
 import tkinter as tk
 import win_utils
 from config_manager import ConfigManager
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 class BreatheWindow(tk.Tk):
     def __init__(self):
@@ -150,7 +153,7 @@ class BreatheWindow(tk.Tk):
             # 2. Set the transparency key and initial alpha
             win_utils.set_layered_attributes(hwnd, self.bg_color, self.alpha)
         except Exception as e:
-            print(f"Error setting window styles: {e}")
+            logger.error(f"Error setting window styles: {e}")
 
     def pulse(self):
         # Reload key config items in case they changed (simple live reload)

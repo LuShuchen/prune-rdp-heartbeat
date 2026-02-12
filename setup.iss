@@ -3,7 +3,7 @@
 ; Non-commercial use only
 
 #define MyAppName "RDP Heartbeat"
-#define MyAppVersion "1.0.0.0"
+#define MyAppVersion "1.1.0.0"
 #define MyAppPublisher "Prune Lab"
 #define MyAppURL "https://github.com/LuShuchen/prune-rdp-heartbeat"
 #define MyAppExeName "RDPHeartbeat.exe"
@@ -40,6 +40,7 @@ SetupIconFile=icon.ico
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
+Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked

@@ -1,6 +1,9 @@
 import json
 import os
 import platform
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 class ConfigManager:
     DEFAULT_CONFIG = {
@@ -11,7 +14,9 @@ class ConfigManager:
         "pulse_speed_ms": 50,
         "always_on_top": True,
         "window_x": None,
-        "window_y": None
+        "window_y": None,
+        "language": "auto",
+        "auto_start": False
     }
 
     def __init__(self, filename="config.json"):
@@ -44,7 +49,7 @@ class ConfigManager:
             else:
                 self.save() # Create default config file
         except Exception as e:
-            print(f"Error loading config: {e}")
+            logger.error(f"Error loading config: {e}")
 
     def save(self):
         """Saves current config to file."""
@@ -53,7 +58,7 @@ class ConfigManager:
             try:
                 os.makedirs(config_dir)
             except OSError as e:
-                print(f"Error creating config directory: {e}")
+                logger.error(f"Error creating config directory: {e}")
                 return
 
         path = self.get_config_path()
@@ -61,7 +66,7 @@ class ConfigManager:
             with open(path, 'w') as f:
                 json.dump(self.config, f, indent=4)
         except Exception as e:
-            print(f"Error saving config: {e}")
+            logger.error(f"Error saving config: {e}")
 
     def get(self, key):
         return self.config.get(key, self.DEFAULT_CONFIG.get(key))

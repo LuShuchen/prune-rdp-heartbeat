@@ -1,6 +1,9 @@
 import ctypes
 import platform
 from ctypes import wintypes
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 # Constants for Windows API
 GWL_EXSTYLE = -20
@@ -23,7 +26,7 @@ def set_click_through(hwnd):
         ex_style = user32.GetWindowLongW(hwnd, GWL_EXSTYLE)
         user32.SetWindowLongW(hwnd, GWL_EXSTYLE, ex_style | WS_EX_LAYERED | WS_EX_TRANSPARENT)
     except Exception as e:
-        print(f"Failed to set click-through: {e}")
+        logger.error(f"Failed to set click-through: {e}")
 
 def remove_click_through(hwnd):
     """
@@ -39,7 +42,7 @@ def remove_click_through(hwnd):
         new_style = ex_style & ~WS_EX_TRANSPARENT
         user32.SetWindowLongW(hwnd, GWL_EXSTYLE, new_style)
     except Exception as e:
-        print(f"Failed to remove click-through: {e}")
+        logger.error(f"Failed to remove click-through: {e}")
 
 def find_window_by_title(title):
     """
@@ -50,7 +53,7 @@ def find_window_by_title(title):
     try:
         return ctypes.windll.user32.FindWindowW(None, title)
     except Exception as e:
-        print(f"Failed to find window: {e}")
+        logger.error(f"Failed to find window: {e}")
         return 0
 
 def set_layered_attributes(hwnd, color_key_hex, alpha_float):
@@ -79,7 +82,7 @@ def set_layered_attributes(hwnd, color_key_hex, alpha_float):
 
         ctypes.windll.user32.SetLayeredWindowAttributes(hwnd, crKey, bAlpha, LWA_COLORKEY | LWA_ALPHA)
     except Exception as e:
-        print(f"Failed to set layered attributes: {e}")
+        logger.error(f"Failed to set layered attributes: {e}")
 
 def set_dpi_awareness():
     """Sets the process to be DPI aware."""

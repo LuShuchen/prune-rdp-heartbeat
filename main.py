@@ -6,8 +6,16 @@ from heartbeat_window import BreatheWindow
 from tray_icon import start_tray
 from settings_dialog import SettingsDialog
 from about_dialog import AboutDialog
+from version import APP_VERSION
+from logger import get_logger
+import i18n
+from config_manager import ConfigManager
+
+logger = get_logger(__name__)
 
 def main():
+    logger.info(f"RDP Heartbeat v{APP_VERSION} starting...")
+
     # Set DPI awareness as early as possible (before Tk initialization)
     win_utils.set_dpi_awareness()
 
@@ -19,10 +27,14 @@ def main():
     mutex = win_utils.create_single_instance_mutex(mutex_name)
     if mutex is None:
         # Another instance is running
-        print("Another instance is already running. Exiting.")
+        logger.warning("Another instance is already running. Exiting.")
         sys.exit(0)
 
-    # 1. Create the GUI on the Main Thread
+    # 1. Initialize i18n (before GUI creation)
+    config_mgr = ConfigManager()
+    i18n.init(config_mgr)
+
+    # 2. Create the GUI on the Main Thread
     app = BreatheWindow()
 
     # Thread-safe callbacks for the tray icon
@@ -61,6 +73,7 @@ def main():
     # to let Tkinter's mainloop run on the main thread.
     def run_tray():
         tray = start_tray(safe_show, safe_hide, safe_toggle_move, safe_open_settings, safe_open_about, safe_exit)
+        app.tray_controller = tray  # Store for settings dialog to trigger menu refresh
         tray.run()
 
     tray_thread = threading.Thread(target=run_tray, daemon=True)
