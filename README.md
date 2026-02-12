@@ -6,6 +6,8 @@
   <img src="https://get.microsoft.com/images/en-us%20dark.svg" width="200"/>
 </a>
 
+> **[点击查看中文说明 (Chinese Readme)](README_zh.md)**
+
 ## Why this tool?
 
 I work remotely via RDP extensively. My RDP connection runs over UDP, which is fast but can be unreliable. Often, when running long tasks like compiling code or waiting for AI coding tools, the screen would freeze silently. I'd be left wondering:
@@ -31,6 +33,8 @@ It's a simple visual cue that saves sanity by letting you know immediately if yo
     *   **Position:** Drag and drop the dot anywhere on your screen.
 *   **Unobtrusive:** "Always on Top" mode ensures it's always visible but stays out of your way.
 *   **System Tray:** Minimizes to the system tray for a clutter-free experience.
+*   **Start on Boot:** Automatically starts with Windows, so you can set it and forget it. (New in v1.1)
+*   **Multi-language:** Supports English and Simplified Chinese.
 
 ## Installation
 

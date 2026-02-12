@@ -1,10 +1,10 @@
 # Microsoft Store Listing Data
-> Last Updated: 2026-02-09 (v1.0.0.0 Initial Release)
+> Last Updated: 2026-02-12 (v1.1.0.0 Feature Update)
 
 ## 1. Product Identity
 * **Product Name:** RDP Heartbeat
 * **Publisher:** Prune Lab
-* **Version:** 1.0.0.0
+* **Version:** 1.1.0.0
 
 ---
 
@@ -25,6 +25,8 @@ KEY FEATURES:
 
 • Visual Heartbeat: A smooth, pulsing dot that confirms your display stream is active.
 
+• Start on Boot: Supports starting automatically with Windows, so you can set it and forget it. (New in v1.1)
+
 • Unobtrusive Design: "Always on Top" ensures visibility, while "Click-through" mode prevents it from blocking your mouse clicks.
 
 • Highly Customizable:
@@ -32,20 +34,27 @@ KEY FEATURES:
    - Size & Opacity: Adjust from a tiny transparent dot to a clear indicator.
    - Position: Drag and drop it anywhere on your screen.
 
+• Localized Interface: Fully supports English and Simplified Chinese.
+
 • System Tray Support: Minimizes quietly to the tray for a clutter-free experience.
 
 Created to make remote work a little less stressful.
 
 ### What's new in this version
-Initial release.
+v1.1.0 Update:
+• New: "Start on Boot" option.
+• New: Simplified Chinese language support.
+• Improved: Application logging for easier troubleshooting.
 
 ### Product Features (Bullet points)
 *Note: Max 20 items, up to 200 chars each.*
 1. Prevents RDP sessions from freezing or disconnecting due to inactivity.
 2. Visual heartbeat indicator confirms your connection is alive.
 3. Highly customizable: adjust color, size, opacity, and position.
-4. Unobtrusive: "Click-through" mode ensures it never blocks your work.
-5. Lightweight system tray application.
+4. Start on Boot: Automatically starts with Windows (New in v1.1).
+5. Localized Interface: Supports English and Simplified Chinese.
+6. Unobtrusive: "Click-through" mode ensures it never blocks your work.
+7. Lightweight system tray application.
 
 ---
 
@@ -59,15 +68,8 @@ Initial release.
 4. Heartbeat
 5. Anti Sleep
 6. Session Keeper
-7. RDP connection monitor
+7. Auto Start
 
 ### Short Description (Supplemental Field)
 *Note: Max 270 chars. Used for search results.*
-A visual heartbeat to keep your RDP sessions alive and prevent freezing.
-
----
-
-## 4. Assets Checklist
-* [x] **Store Logo:** (Provided in MSIX package)
-* [x] **Screenshots (Desktop):**
-    * `assets/store/screenshot_settings_v1.png` (Main showcase with Settings UI)
+A visual heartbeat to keep your RDP sessions alive. Now with Auto-Start and Chinese support.
