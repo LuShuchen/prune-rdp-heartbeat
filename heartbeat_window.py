@@ -6,11 +6,11 @@ from logger import get_logger
 logger = get_logger(__name__)
 
 class BreatheWindow(tk.Tk):
-    def __init__(self):
+    def __init__(self, config_manager=None):
         super().__init__()
 
         # Load Config
-        self.config_manager = ConfigManager()
+        self.config_manager = config_manager or ConfigManager()
         self.cfg = self.config_manager
 
         self.title("RDP Heartbeat")

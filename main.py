@@ -35,7 +35,7 @@ def main():
     i18n.init(config_mgr)
 
     # 2. Create the GUI on the Main Thread
-    app = BreatheWindow()
+    app = BreatheWindow(config_mgr)
 
     # Thread-safe callbacks for the tray icon
     # Tkinter requires GUI updates to happen on the main thread
