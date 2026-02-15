@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10" xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" xmlns:desktop7="http://schemas.microsoft.com/appx/manifest/desktop/windows10/7" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap uap10 desktop desktop7 rescap">
   <!--Package created by MSIX Packaging Tool version: 1.2024.405.0-->
-  <Identity Name="PruneLab.RDPHeartbeat" Publisher="CN=21C32622-53AF-45A6-8AB1-B35BCD475CAD" Version="1.1.0.0" ProcessorArchitecture="x64" />
+  <Identity Name="PruneLab.RDPHeartbeat" Publisher="CN=21C32622-53AF-45A6-8AB1-B35BCD475CAD" Version="1.1.1.0" ProcessorArchitecture="x64" />
   <Properties>
     <DisplayName>RDP Heartbeat</DisplayName>
     <PublisherDisplayName>Prune Lab</PublisherDisplayName>

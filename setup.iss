@@ -3,7 +3,7 @@
 ; Non-commercial use only
 
 #define MyAppName "RDP Heartbeat"
-#define MyAppVersion "1.1.0.0"
+#define MyAppVersion "1.1.1.0"
 #define MyAppPublisher "Prune Lab"
 #define MyAppURL "https://github.com/LuShuchen/prune-rdp-heartbeat"
 #define MyAppExeName "RDPHeartbeat.exe"
