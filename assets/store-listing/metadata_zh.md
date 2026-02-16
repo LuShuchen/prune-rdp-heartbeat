@@ -1,10 +1,10 @@
 # Microsoft Store Listing Data (Chinese Simplified)
-> Last Updated: 2026-02-15 (v1.1.1.0 Patch)
+> Last Updated: 2026-02-16 (v1.1.2.0 Patch)
 
 ## 1. 产品标识 (Product Identity)
 * **产品名称:** RDP Heartbeat
 * **发布者:** Prune Lab
-* **版本:** 1.1.1.0
+* **版本:** 1.1.2.0
 
 ---
 
@@ -41,6 +41,9 @@ RDP Heartbeat 是一款极简的“远程连接保活”工具。它会在屏幕
 专为远程办公和极客打造，让远程连接更稳定、更省心。
 
 ### 新版本特性 (What's new in this version)
+v1.1.2 补丁：
+• 更新：更新了应用图标。
+
 v1.1.1 补丁：
 • 修复：修复了 ConfigManager 在启动时被重复初始化的问题，该问题可能导致设置未能正确加载。
 

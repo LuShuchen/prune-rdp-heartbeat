@@ -1,10 +1,10 @@
 # Microsoft Store Listing Data
-> Last Updated: 2026-02-15 (v1.1.1.0 Patch)
+> Last Updated: 2026-02-16 (v1.1.2.0 Patch)
 
 ## 1. Product Identity
 * **Product Name:** RDP Heartbeat
 * **Publisher:** Prune Lab
-* **Version:** 1.1.1.0
+* **Version:** 1.1.2.0
 
 ---
 
@@ -41,6 +41,9 @@ KEY FEATURES:
 Created to make remote work a little less stressful.
 
 ### What's new in this version
+v1.1.2 Patch:
+• Updated: New application icon.
+
 v1.1.1 Patch:
 • Fixed: ConfigManager was being initialized twice at startup, which could cause settings to not load correctly.
 
